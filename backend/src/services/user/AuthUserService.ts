@@ -1,5 +1,9 @@
 import prismaClient from "../../prisma/prisma";
 import { compare } from 'bcryptjs'
+import { sign } from 'jsonwebtoken'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 interface AuthRequest {
     email: string,
@@ -23,11 +27,29 @@ class AuthUserService {
         // Verifiy password
         const passwordMatch = await compare(password, user.password)
 
-        if(!passwordMatch){
-            throw new Error ('A senha está incorreta')
+        if (!passwordMatch) {
+            throw new Error('A senha está incorreta')
         }
 
         // Generate JWT
+        const token = sign(
+            {
+                name: user.name,
+                email: user.email
+            },
+            process.env.JWT_SECRET as string,
+            {
+                subject: user.id,
+                expiresIn:'7d'
+            }
+        )
+        
+        return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            token: token
+        }
     }
 }
 
