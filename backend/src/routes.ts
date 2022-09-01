@@ -1,13 +1,18 @@
 import {Router} from 'express'
 import multer from 'multer'
+// CONTROLLERS
 import { CreateUserController } from './controllers/user/UserController'
 import { AuthUserController } from './controllers/user/AuthUserController'
 import { DetailUserController } from './controllers/user/DetailUserController'
-import { isAuthenticated } from './middlewares/isAuthenticated'
 import { CreateCategoryController } from './controllers/category/CategoryController'
 import { ListCategoryController } from './controllers/category/ListCategoryController'
 import { CreateProductController } from './controllers/products/ProductsController'
+import { ListByCategoryController } from './controllers/products/ListByCategoryController'
 
+// MIDDLEWARES
+import { isAuthenticated } from './middlewares/isAuthenticated'
+
+// MULTER CONFIG
 import uploadConfig from './config/multer'
 
 
@@ -25,11 +30,11 @@ router.get('/me', isAuthenticated, new DetailUserController().handle)
 
 // CATEGORY ROUTES
 router.post('/category', new CreateCategoryController().handle)
-
 router.get('/category', isAuthenticated, new ListCategoryController().handle)
 
 // PRODUCTS ROUTES
 router.post('/product', isAuthenticated, upload.single('file'), new CreateProductController().handle)
+router.get('/category/products', isAuthenticated, new ListByCategoryController().handle)
 
 
 export {router}
