@@ -27,9 +27,9 @@ model Category {
   name       String
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
-  products   Product[]
 
   @@map("categories")
+  products   Product[]
 }
 
 model Product {
@@ -43,10 +43,10 @@ model Product {
 
   category Category @relation(fields: [category_id], references: [id])
 
-  category_id String
   items Item[]
 
   @@map("products")
+  category_id String
 }
 
 model Order {
@@ -58,7 +58,7 @@ model Order {
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
-  @@map("oders")
+  @@map("orders")
   
   items Item[]
 }
