@@ -1,5 +1,6 @@
 import {Router} from 'express'
 import multer from 'multer'
+
 // CONTROLLERS
 import { CreateUserController } from './controllers/user/UserController'
 import { AuthUserController } from './controllers/user/AuthUserController'
@@ -14,6 +15,9 @@ import { isAuthenticated } from './middlewares/isAuthenticated'
 
 // MULTER CONFIG
 import uploadConfig from './config/multer'
+import { CreateOrderController } from './controllers/order/OrderController'
+import { RemoveOrderController } from './controllers/order/RemoveOrderController'
+import { AddItemController } from './controllers/order/AddItemController'
 
 
 const router = Router()
@@ -35,6 +39,12 @@ router.get('/category', isAuthenticated, new ListCategoryController().handle)
 // PRODUCTS ROUTES
 router.post('/product', isAuthenticated, upload.single('file'), new CreateProductController().handle)
 router.get('/category/products', isAuthenticated, new ListByCategoryController().handle)
+
+// ORDER ROUTES
+router.post('/order', isAuthenticated, new CreateOrderController().handle)
+router.delete('/order', isAuthenticated, new RemoveOrderController().handle)
+router.post('/order/add', isAuthenticated, new AddItemController().handle)
+
 
 
 export {router}
