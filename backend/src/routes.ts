@@ -21,6 +21,7 @@ import { isAuthenticated } from './middlewares/isAuthenticated'
 // MULTER CONFIG
 import uploadConfig from './config/multer'
 import { GetActiveOrdersController } from './controllers/order/GetActiveOrdersController'
+import { DetailOrderController } from './controllers/order/DetailOrderController'
 
 
 const router = Router()
@@ -28,26 +29,33 @@ const router = Router()
 const upload = multer(uploadConfig.upload('./tmp'))
 
 // USER ROUTES
+// router.get('/me', isAuthenticated, new DetailUserController().handle)
 router.post('/register', new CreateUserController().handle)
-
 router.post('/login', new AuthUserController().handle)
 
-router.get('/me', isAuthenticated, new DetailUserController().handle)
 
 
 // CATEGORY ROUTES
-router.post('/category', new CreateCategoryController().handle)
 router.get('/category', isAuthenticated, new ListCategoryController().handle)
 
+router.post('/category', new CreateCategoryController().handle)
+
+
 // PRODUCTS ROUTES
-router.post('/product', isAuthenticated, upload.single('file'), new CreateProductController().handle)
 router.get('/category/products', isAuthenticated, new ListByCategoryController().handle)
+
+router.post('/product', isAuthenticated, upload.single('file'), new CreateProductController().handle)
+
 
 // ORDER ROUTES
 router.get('/order', isAuthenticated, new GetActiveOrdersController().handle)
+router.get('/order/detail', isAuthenticated, new DetailOrderController().handle)
+
 router.post('/order', isAuthenticated, new CreateOrderController().handle)
 router.post('/order/add', isAuthenticated, new AddItemController().handle)
+
 router.put('/order/send', isAuthenticated, new SendOrderController().handle)
+
 router.delete('/order', isAuthenticated, new RemoveOrderController().handle)
 router.delete('/order/remove', isAuthenticated, new RemoveItemController().handle)
 
