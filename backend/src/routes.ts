@@ -22,6 +22,7 @@ import { isAuthenticated } from './middlewares/isAuthenticated'
 import uploadConfig from './config/multer'
 import { GetActiveOrdersController } from './controllers/order/GetActiveOrdersController'
 import { DetailOrderController } from './controllers/order/DetailOrderController'
+import { FinishOrderController } from './controllers/order/FinishOrderController'
 
 
 const router = Router()
@@ -55,6 +56,7 @@ router.post('/order', isAuthenticated, new CreateOrderController().handle)
 router.post('/order/add', isAuthenticated, new AddItemController().handle)
 
 router.put('/order/send', isAuthenticated, new SendOrderController().handle)
+router.put('/order/finish', isAuthenticated, new FinishOrderController().handle)
 
 router.delete('/order', isAuthenticated, new RemoveOrderController().handle)
 router.delete('/order/remove', isAuthenticated, new RemoveItemController().handle)
