@@ -13,6 +13,7 @@ import { CreateOrderController } from './controllers/order/OrderController'
 import { RemoveOrderController } from './controllers/order/RemoveOrderController'
 import { AddItemController } from './controllers/order/AddItemController'
 import { RemoveItemController } from './controllers/order/RemoveItemController'
+import { SendOrderController } from './controllers/order/SendOrderController'
 
 // MIDDLEWARES
 import { isAuthenticated } from './middlewares/isAuthenticated'
@@ -44,6 +45,7 @@ router.get('/category/products', isAuthenticated, new ListByCategoryController()
 // ORDER ROUTES
 router.post('/order', isAuthenticated, new CreateOrderController().handle)
 router.post('/order/add', isAuthenticated, new AddItemController().handle)
+router.put('/order/send', isAuthenticated, new SendOrderController().handle)
 router.delete('/order', isAuthenticated, new RemoveOrderController().handle)
 router.delete('/order/remove', isAuthenticated, new RemoveItemController().handle)
 
