@@ -20,6 +20,7 @@ import { isAuthenticated } from './middlewares/isAuthenticated'
 
 // MULTER CONFIG
 import uploadConfig from './config/multer'
+import { GetActiveOrdersController } from './controllers/order/GetActiveOrdersController'
 
 
 const router = Router()
@@ -43,6 +44,7 @@ router.post('/product', isAuthenticated, upload.single('file'), new CreateProduc
 router.get('/category/products', isAuthenticated, new ListByCategoryController().handle)
 
 // ORDER ROUTES
+router.get('/order', isAuthenticated, new GetActiveOrdersController().handle)
 router.post('/order', isAuthenticated, new CreateOrderController().handle)
 router.post('/order/add', isAuthenticated, new AddItemController().handle)
 router.put('/order/send', isAuthenticated, new SendOrderController().handle)
