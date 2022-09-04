@@ -1,8 +1,10 @@
 
+
+
 export default function Home() {
   return (
-    <div >
-    Sujeito Pizza
+    <div>
+    <h1>Sujeito Pizza</h1>
     </div>
   )
 }
