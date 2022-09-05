@@ -1,3 +1,7 @@
+// React imports
+import { useContext, FormEvent, useState } from 'react'
+
+// Head from next
 import Head from 'next/head'
 
 // Logo
@@ -13,7 +17,28 @@ import { Button } from '../components/ui/Button/Button'
 // Next Link
 import Link from 'next/link'
 
+// Context
+import { AuthContext } from '../contexts/AuthContext'
+
+
 export default function Home() {
+  const {sigIn} = useContext(AuthContext)
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  async function handleLogin(e: FormEvent) {
+    e.preventDefault()
+    
+    let data = {
+      email,
+      password
+    }
+    
+    await sigIn(data)
+    
+  }
+
   return (
     <>
       <Head>
@@ -25,30 +50,34 @@ export default function Home() {
         <Image src={logoImg} alt='Logo Sujeiro Pizzaria' />
 
         <div className={styles.login}>
-          <form>
+          <form onSubmit={handleLogin}>
             <Input
               placeholder='Digite seu e-mail'
               type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
 
             <Input
               placeholder='Digite sua senha'
               type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
 
 
-            <Button 
-            type='submit'
-            loading={false}
+            <Button
+              type='submit'
+              loading={false}
             >
               Acessar
             </Button>
           </form>
 
           <Link href='/signup'>
-          <a className={styles.text}>
-            Não possui uma conta? <b>Cadastre-se</b>
-          </a>
+            <a className={styles.text}>
+              Não possui uma conta? <b>Cadastre-se</b>
+            </a>
           </Link>
         </div>
       </div>
