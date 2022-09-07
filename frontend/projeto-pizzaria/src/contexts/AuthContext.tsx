@@ -14,8 +14,9 @@ import { api } from '../../styles/services/apiClient'
 type AuthContextData = {
     user: UserProps
     isAuthenticated: boolean
-    sigIn: (credentials: SigInProps) => Promise<void>
+    sigIn: (credentials: SigInProps) => Promise<void> // if async function promise
     singOut: () => void
+    singUp: (credentials: SingUpProps) => Promise<void>
 }
 
 
@@ -32,6 +33,12 @@ type SigInProps = {
 
 type AuthProviderProps = {
     children: ReactNode
+}
+
+type SingUpProps = {
+    name: string,
+    email: string,
+    password: string
 }
 
 export const AuthContext = createContext({} as AuthContextData)
@@ -53,17 +60,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     async function sigIn({ email, password }: SigInProps) {
         try {
-            const res = await api.post('/login',{
+            const res = await api.post('/login', {
                 email,
                 password
             })
-            const {id, name, token} = res.data
-            setCookie(undefined, 'token', token,{
+            const { id, name, token } = res.data
+            setCookie(undefined, 'token', token, {
                 maxAge: 60 * 60 * 24 * 30, // Expires in 1 month
                 path: '/' // All routes get access to the token
-    
+
             })
-    
+
             setUser({
                 id,
                 name,
@@ -78,11 +85,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
         } catch (e) {
             console.log(e.message)
         }
-    
+
     }
-    
+
+    async function singUp({name, email, password}: SingUpProps) {
+        
+        try {
+            const res = await api.post('/register',{
+                name,
+                email,
+                password
+            })
+
+            Router.push('/')
+            
+            return res.data
+            
+        } catch (e) {
+            console.log(e.message)
+        }
+
+    }
+
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, sigIn, singOut }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, sigIn, singOut, singUp }}>
             {children}
         </AuthContext.Provider>
     )

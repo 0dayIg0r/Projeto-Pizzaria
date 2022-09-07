@@ -1,38 +1,54 @@
 // React imports
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useContext } from 'react'
 
 // Next Imports
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
+
 // CSS
 import styles from '../../../styles/home.module.scss'
 
 // Logo
 import logoImg from '../../../public/logo.svg'
+
 // Components
 import { Input } from '../../components/ui/Input/Input'
 import { Button } from '../../components/ui/Button/Button'
 
-// Next Link
-import Link from 'next/link'
-import React from 'react'
+// Context
+import { AuthContext } from '../../contexts/AuthContext'
+
+
 
 export default function SignUp() {
+  const { singUp } = useContext(AuthContext)
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const [loading, setLoading] = useState(false)
 
-  async function handleSignUp(e:FormEvent){
+  async function handleSignUp(e: FormEvent) {
     e.preventDefault()
 
-    if(name === '' || email === '' || password === ''){
+    if (name === '' || email === '' || password === '') {
       alert('preencha todos os campos')
       return
     }
 
     setLoading(true)
+
+    let data = {
+      name, 
+      email,
+      password
+    }
+
+    await singUp(data)
+
+    setLoading(false)
 
   }
 
