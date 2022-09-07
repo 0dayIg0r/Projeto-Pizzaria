@@ -10,6 +10,9 @@ import Router from 'next/router'
 import { api } from '../../styles/services/apiClient'
 
 
+// Toastfiy
+import { toast } from 'react-toastify'
+
 
 type AuthContextData = {
     user: UserProps
@@ -64,6 +67,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 email,
                 password
             })
+
             const { id, name, token } = res.data
             setCookie(undefined, 'token', token, {
                 maxAge: 60 * 60 * 24 * 30, // Expires in 1 month
@@ -79,29 +83,35 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
             // Next requests recive the token
             api.defaults.headers['Authorization'] = `Bearer ${token}`
+            
+            toast.success('Logando!')
 
             // Redirect user to dashboard
             Router.push('/dashboard')
         } catch (e) {
+            toast.error('Usuário ou senha incorretos!')
             console.log(e.message)
         }
 
     }
 
-    async function singUp({name, email, password}: SingUpProps) {
-        
+    async function singUp({ name, email, password }: SingUpProps) {
+
         try {
-            const res = await api.post('/register',{
+            const res = await api.post('/register', {
                 name,
                 email,
                 password
             })
 
+            toast.success('Cadastro realizado!')
+
             Router.push('/')
-            
+
             return res.data
-            
+
         } catch (e) {
+            toast.error('Ocorreu um erro, tente novamente mais tarde!')
             console.log(e.message)
         }
 

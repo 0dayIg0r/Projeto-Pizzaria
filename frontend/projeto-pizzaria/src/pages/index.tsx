@@ -20,6 +20,9 @@ import Link from 'next/link'
 // Context
 import { AuthContext } from '../contexts/AuthContext'
 
+// Toastfiy
+import { toast } from 'react-toastify'
+
 
 export default function Home() {
   const {sigIn} = useContext(AuthContext)
@@ -32,6 +35,8 @@ export default function Home() {
     e.preventDefault()
 
     if(email === '' || password === ''){
+      toast.error('Preencha todos os campos!')
+      
       return
     }
 

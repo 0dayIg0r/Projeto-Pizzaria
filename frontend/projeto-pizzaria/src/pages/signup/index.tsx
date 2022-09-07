@@ -19,6 +19,8 @@ import { Button } from '../../components/ui/Button/Button'
 // Context
 import { AuthContext } from '../../contexts/AuthContext'
 
+// Toastfiy
+import { toast } from 'react-toastify'
 
 
 export default function SignUp() {
@@ -34,14 +36,15 @@ export default function SignUp() {
     e.preventDefault()
 
     if (name === '' || email === '' || password === '') {
-      alert('preencha todos os campos')
+      toast.error('Todos os campos são obrigatórios!')
+      
       return
     }
 
     setLoading(true)
 
     let data = {
-      name, 
+      name,
       email,
       password
     }
