@@ -26,9 +26,17 @@ export default function Home() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   async function handleLogin(e: FormEvent) {
     e.preventDefault()
+
+    if(email === '' || password === ''){
+      return
+    }
+
+    setLoading(true)
+    
     
     let data = {
       email,
@@ -36,6 +44,8 @@ export default function Home() {
     }
     
     await sigIn(data)
+    
+    setLoading(false)
     
   }
 
@@ -68,7 +78,7 @@ export default function Home() {
 
             <Button
               type='submit'
-              loading={false}
+              loading={loading}
             >
               Acessar
             </Button>
