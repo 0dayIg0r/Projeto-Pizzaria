@@ -67,18 +67,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         // Get details of user
         if (token) {
-            api.get('/me').then(res => {
-                const { id, name, email } = res.data
+            api.get('/me')
+                .then(res => {
+                    const { id, name, email } = res.data
 
-                setUser({
-                    id,
-                    name,
-                    email
+                    setUser({
+                        id,
+                        name,
+                        email
+                    })
                 })
-            })
-                .catch(() => {
+                .catch((e) => {
                     // Singout user if catch
-                    singOut()
+                    // singOut()
+                    
                 })
         }
     }, [])
