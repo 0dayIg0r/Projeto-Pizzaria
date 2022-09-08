@@ -1,21 +1,25 @@
 // React imports
 import { useContext, FormEvent, useState } from 'react'
 
-// Head from next
+// Imports  next
 import Head from 'next/head'
+import Link from 'next/link'
 
 // Logo
 import Image from 'next/image'
+
 // CSS
 import styles from '../../styles/home.module.scss'
 
+// Logo import
 import logoImg from '../../public/logo.svg'
+
 // Components
 import { Input } from '../components/ui/Input/Input'
 import { Button } from '../components/ui/Button/Button'
 
-// Next Link
-import Link from 'next/link'
+// Private routes
+import { canSSRGuest } from '../utils/canSSR.Guest'
 
 // Context
 import { AuthContext } from '../contexts/AuthContext'
@@ -98,4 +102,12 @@ export default function Home() {
       </div>
     </>
   )
+  
 }
+
+
+export const getServerSideProps = canSSRGuest(async (ctx) =>{
+  return{
+      props:{}
+  }
+})
