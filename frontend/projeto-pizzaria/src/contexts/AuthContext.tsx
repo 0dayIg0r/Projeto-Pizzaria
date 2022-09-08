@@ -1,5 +1,5 @@
 // React imports
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, ReactNode, useState, useEffect } from 'react'
 
 
 // Nookie
@@ -61,6 +61,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<UserProps>()
     const isAuthenticated = !!user // convert to boolean, if state user set isAuthenticated to true
 
+    useEffect(() => {
+        //Get token
+        const { 'token': token } = parseCookies()
+
+        // Get details of user
+        if (token) {
+            api.get('/me').then(res => {
+                const { id, name, email } = res.data
+
+                setUser({
+                    id,
+                    name,
+                    email
+                })
+            })
+                .catch(() => {
+                    // Singout user if catch
+                    singOut()
+                })
+        }
+    }, [])
+
+
     async function sigIn({ email, password }: SigInProps) {
         try {
             const res = await api.post('/login', {
@@ -83,7 +106,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
             // Next requests recive the token
             api.defaults.headers['Authorization'] = `Bearer ${token}`
-            
+
             toast.success('Logando!')
 
             // Redirect user to dashboard
