@@ -5,7 +5,7 @@ import { redirect } from 'next/dist/server/api-utils'
 // Cookies
 import { parseCookies, destroyCookie } from 'nookies'
 import { parse } from 'path'
-import { AuthTokenError } from '../../styles/services/errors/AuthTokenError'
+import { AuthTokenError } from '../services/errors/AuthTokenError'
 
 // Only logged can access
 export function canSSRAuth<P>(fn: GetServerSideProps<P>) {

@@ -7,7 +7,7 @@ import { destroyCookie, setCookie, parseCookies } from 'nookies'
 
 // Next router
 import Router from 'next/router'
-import { api } from '../../styles/services/apiClient'
+import { api } from '../services/apiClient'
 
 
 // Toastfiy

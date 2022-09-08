@@ -8,7 +8,7 @@ import { parseCookies } from 'nookies'
 import { AuthTokenError } from './errors/AuthTokenError'
 
 // Functions
-import { singOut } from '../../src/contexts/AuthContext'
+import { singOut } from '../contexts/AuthContext'
 
 export function setupAPIClient(ctx = undefined) {
     let cookies = parseCookies(ctx)
