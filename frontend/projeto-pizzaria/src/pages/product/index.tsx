@@ -168,6 +168,7 @@ export default function Product({ categoryList}: CategoryProps) {
                         </button>
                     </form>
                 </main>
+               
             </div>
         </>
     )
