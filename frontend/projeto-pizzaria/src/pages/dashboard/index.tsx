@@ -8,8 +8,9 @@ import { setupAPIClient } from '../../services/api'
 
 import Modal from 'react-modal'
 import { ModalOrder } from '../../components/ModalOrder'
+import { api } from '../../services/apiClient'
 
-export type OrderProps = {
+type OrderProps = {
     id: string,
     table: string,
     status: boolean,
@@ -20,19 +21,19 @@ interface HomeProps {
     orders: OrderProps[]
 }
 
-type OrderItemProps = {
-    id:string,
+export type OrderItemProps = {
+    id: string,
     amount: number,
     order_id: string,
     product_id: string,
-    product:{
+    product: {
         id: string,
-        name:string,
+        name: string,
         description: string,
         price: string,
         banner: string
     }
-    oder:{
+    order: {
         id: string,
         table: string | number,
         status: boolean,
@@ -46,14 +47,42 @@ export default function DashBoard({ orders }: HomeProps) {
     const [modalItem, setModalItem] = useState<OrderItemProps[]>()
     const [modalVisible, setModalVisible] = useState(false)
 
-    const handleCloseModal = () =>{
+    // Manual  refresh
+    const handleRefresh = async () => {
+        const apiClient = setupAPIClient()
+        const res = await apiClient.get('/order')
+        setOrderList(res.data)
+    }
+
+    // Automatic refresh 1 and 1 minute
+    setTimeout(async () => {
+        const apiClient = setupAPIClient()
+        const res = await apiClient.get('/order')
+        setOrderList(res.data)
+    }, 60000)
+
+    const handleCloseModal = () => {
         setModalVisible(false)
     }
-    const handleModal = async(id: string) =>{
+
+    const handleFinishOrder = async (id: string) => {
+        const apiClient = setupAPIClient()
+        await apiClient.put('/order/finish', {
+            order_id: id
+        })
+
+        const res = await apiClient.get('/order')
+        setOrderList(res.data)
+
+        setModalVisible(false)
+    }
+
+
+    const handleModal = async (id: string) => {
         const apiClient = setupAPIClient()
 
-        const res = await apiClient.get('/order/detail',{
-            params:{
+        const res = await apiClient.get('/order/detail', {
+            params: {
                 order_id: id
             }
         })
@@ -75,10 +104,18 @@ export default function DashBoard({ orders }: HomeProps) {
                 <div className={styles.containerHeader}>
                     <h1>Últimos pedidos</h1>
                     <button>
-                        <FiRefreshCcw size={25} color='#3FFAA3' />
+                        <FiRefreshCcw
+                            size={25}
+                            color='#3FFAA3'
+                            onClick={() => handleRefresh()}
+                        />
                     </button>
                 </div>
-
+                {orderList.length === 0 && (
+                    <span className={styles.emptyList}>
+                        Você não tem nenhum pedido.
+                    </span>
+                )}
                 <article className={styles.listOrders}>
                     {orderList.map((item) => (
                         <section className={styles.orderItem} key={item.id}>
@@ -91,7 +128,12 @@ export default function DashBoard({ orders }: HomeProps) {
                 </article>
             </main>
             {modalVisible && (
-                <ModalOrder/>
+                <ModalOrder
+                    isOpen={modalVisible}
+                    onRequestClose={handleCloseModal}
+                    order={modalItem}
+                    handleFinishOrder={handleFinishOrder}
+                />
             )}
         </>
     )
