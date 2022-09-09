@@ -14,7 +14,7 @@ export default function Category() {
         e.preventDefault()
 
         if(name === ''){
-            return
+            toast.error('Digite o nome da categoria!')
         }
 
         const apiClient = setupAPIClient()
