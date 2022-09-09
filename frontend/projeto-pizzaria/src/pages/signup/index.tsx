@@ -93,12 +93,11 @@ export default function SignUp() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-
+             
             <Button
               type='submit'
               loading={loading}
             >
-              Cadastrar
             </Button>
           </form>
 

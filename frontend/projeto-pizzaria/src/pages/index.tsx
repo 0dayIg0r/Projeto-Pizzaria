@@ -95,7 +95,7 @@ export default function Home() {
 
           <Link href='/signup'>
             <a className={styles.text}>
-              Não possui uma conta? <b>Cadastre-se</b>
+              Não possui uma conta? <b>cadastre-se</b>
             </a>
           </Link>
         </div>
