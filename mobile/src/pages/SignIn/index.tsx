@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 
-function SingIn() {
+function SignIn() {
   return (
     <View>
         <Text>
@@ -11,4 +11,4 @@ function SingIn() {
   )
 }
 
-export default SingIn
+export default SignIn
