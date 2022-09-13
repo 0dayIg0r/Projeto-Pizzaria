@@ -3,16 +3,11 @@ import {
   Text,
   View,
   StyleSheet,
+  Image,
   TextInput,
   TouchableOpacity
 } from 'react-native'
 
-
-import Svg, {
-  Use,
-  Image,
-} from 'react-native-svg';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
 export default function SignIn() {
@@ -30,10 +25,9 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
-      <Svg>
-        <Image href={require('../../assets/logo.svg')} />
-      </Svg>
-
+    <Image
+    source={require('../../assets/logo.png')}
+    />
       <View style={styles.inputContainer}>
         <TextInput
           placeholder='Digite seu e-mail'
