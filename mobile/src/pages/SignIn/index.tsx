@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {
   Text,
   View,
@@ -8,9 +8,12 @@ import {
   TouchableOpacity
 } from 'react-native'
 
+import { AuthContext } from '../../contexts/AuthContext'
 
 
 export default function SignIn() {
+  const  {} = useContext(AuthContext)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -29,6 +32,9 @@ export default function SignIn() {
     source={require('../../assets/logo.png')}
     style={styles.logo}
     />
+    <Text>
+      {user.email}
+    </Text>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder='Digite seu e-mail'
