@@ -4,7 +4,6 @@ import Dashboard from '../pages/Dashboard'
 
 const Stack = createNativeStackNavigator()
 
-
 function AppRoutes() {
   return (
     <Stack.Navigator>

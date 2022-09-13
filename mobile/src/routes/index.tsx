@@ -7,7 +7,6 @@ import AuthRoutes from './auth.routes'
 function Routes() {
   const isAuthenticated = false
   const loading = false
-
   if (loading) {
     return (
       <View style={
@@ -17,16 +16,14 @@ function Routes() {
           justifyContent: 'center',
           alignItems: 'center',
         }
-        }>
-          <ActivityIndicator size={60} color='#FFF'/>
+      }>
+        <ActivityIndicator size={60} color='#FFF' />
       </View>
     )
   }
   return (
-    <View>
-      {isAuthenticated ? <AppRoutes /> : <AuthRoutes />}
-
-    </View>
+      isAuthenticated ? <AppRoutes /> : <AuthRoutes />
+ 
   )
 }
 
