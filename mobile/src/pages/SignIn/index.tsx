@@ -5,7 +5,7 @@ function SignIn() {
   return (
     <View>
         <Text>
-            MA OEE
+            SigIn
         </Text>
     </View>
   )
