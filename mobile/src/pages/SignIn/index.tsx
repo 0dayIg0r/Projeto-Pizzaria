@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Text,
   View,
@@ -12,29 +12,29 @@ import { AuthContext } from '../../contexts/AuthContext'
 
 
 export default function SignIn() {
-  const  {} = useContext(AuthContext)
+  const { signIn } = useContext(AuthContext)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  
-  function handleLogin(){
-    if(!email || !password){
+
+  async function handleLogin() {
+    if (!email || !password) {
       return
     }
-    
+
+    await signIn({ email, password })
   }
 
 
   return (
     <View style={styles.container}>
-    <Image
-    source={require('../../assets/logo.png')}
-    style={styles.logo}
-    />
-    <Text>
-      {user.email}
-    </Text>
+      <Image
+        source={require('../../assets/logo.png')}
+        style={styles.logo}
+      />
+      <Text>
+      </Text>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder='Digite seu e-mail'
@@ -42,7 +42,7 @@ export default function SignIn() {
           placeholderTextColor='#F0F0F0'
           value={email}
           onChangeText={setEmail}
-          
+
         />
         <TextInput
           placeholder='Digite sua senha'
@@ -53,9 +53,9 @@ export default function SignIn() {
         />
 
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>
-              Entrar
-            </Text>
+          <Text style={styles.buttonText}>
+            Entrar
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
     paddingHorizontal: 14
   },
-  logo:{
+  logo: {
     marginBottom: 18
   },
-  input:{
+  input: {
     width: '95%',
     height: 40,
     backgroundColor: '#101026',
@@ -91,15 +91,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     color: '#FFF',
   },
-  button:{
+  button: {
     width: '95%',
     height: 40,
     backgroundColor: '#3FFFA3',
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 12
   },
-  buttonText:{
+  buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#101026'
