@@ -3,6 +3,7 @@ import { View, Text, SafeAreaView, TouchableOpacity, TextInput, StyleSheet } fro
 import { useNavigation } from '@react-navigation/native'
 import { StackParamList } from '../../routes/app.routes'
 import { NativeStackNavigationProp} from '@react-navigation/native-stack'
+import { api } from '../../services/api'
 
 
 
@@ -17,9 +18,14 @@ function Dashboard() {
     if (number === '') {
       return
     }
-
+    const res = await api.post('/order',{
+      table: Number(number)
+    })
+   
     // Make the request and navigate to next page
-    navigation.navigate('Order', {number: number, order_id: 'a1s1d23550x2x15a5w11'})
+    navigation.navigate('Order', {number: number, order_id: res.data.id})
+
+    setNumber('')
   }
 
 

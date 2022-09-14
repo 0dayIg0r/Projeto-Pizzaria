@@ -1,4 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native'
+import Routes from '../../routes'
+import { Feather } from '@expo/vector-icons'
+import { api } from '../../services/api'
 import {
     View,
     Text,
@@ -6,11 +10,6 @@ import {
     TouchableOpacity,
     TextInput
 } from 'react-native'
-import { useRoute, RouteProp } from '@react-navigation/native'
-import Routes from '../../routes'
-
-import { Feather } from '@expo/vector-icons'
-
 
 type RouteDetailParams = {
     Order: {
@@ -22,34 +21,49 @@ type RouteDetailParams = {
 type OrderRouteProps = RouteProp<RouteDetailParams, 'Order'>
 
 function Order() {
-
-
     const route = useRoute<OrderRouteProps>()
+    const navigation = useNavigation()
+
+
+    async function handleCloseOrder() {
+        try {
+            await api.delete('/order',{
+                params:{
+                    order_id: route.params?.order_id
+                }
+            })
+            navigation.goBack()
+            
+        } catch (e:any) {
+            console.log(e.message)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}> Mesa {route.params.number}</Text>
 
-                <TouchableOpacity>
-                    <Feather name='trash-2' size={28} color='#FF3F4B'/>
+                <TouchableOpacity onPress={handleCloseOrder}>
+                    <Feather name='trash-2' size={28} color='#FF3F4B' />
                 </TouchableOpacity>
             </View>
 
             <TouchableOpacity style={styles.input}>
-                <Text style={{color: '#fff'}}>Pizzas</Text>
+                <Text style={{ color: '#fff' }}>Pizzas</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.input}>
-                <Text style={{color: '#fff'}}>Pizza de calabresa</Text>
+                <Text style={{ color: '#fff' }}>Pizza de calabresa</Text>
             </TouchableOpacity>
 
             <View style={styles.qtyContainer}>
                 <Text style={styles.qtyText}> Quantidade</Text>
 
                 <TextInput
-                style={[styles.input, {width: '60%', textAlign: 'center'}]}
-                keyboardType='numeric'
-                value='1'
+                    style={[styles.input, { width: '60%', textAlign: 'center' }]}
+                    keyboardType='numeric'
+                    value='1'
                 />
             </View>
 
@@ -75,19 +89,19 @@ const styles = StyleSheet.create({
         paddingEnd: '4%',
         paddingStart: '4%'
     },
-    header:{
+    header: {
         flexDirection: 'row',
         marginBottom: 12,
         alignItems: 'center',
         marginTop: 24,
     },
-    title:{
+    title: {
         color: '#FFF',
         fontSize: 30,
         fontWeight: 'bold',
         marginRight: 14
     },
-    input:{
+    input: {
         backgroundColor: '#101026',
         borderRadius: 4,
         width: '100%',
@@ -98,22 +112,22 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 20
     },
-    qtyContainer:{
+    qtyContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    qtyText:{
+    qtyText: {
         fontSize: 20,
         fontWeight: 'bold',
         color: '#FFF'
     },
-    actions:{
+    actions: {
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'space-between',
     },
-    buttonAdd:{
+    buttonAdd: {
         width: '20%',
         backgroundColor: '#3FD1FF',
         borderRadius: 4,
@@ -121,13 +135,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    buttonText:{
+    buttonText: {
         color: '#101026',
         fontSize: 18,
         fontWeight: 'bold',
-    
+
     },
-    button:{
+    button: {
         backgroundColor: '#3FFfA3',
         borderRadius: 4,
         height: 40,
