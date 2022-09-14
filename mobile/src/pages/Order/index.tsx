@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native'
 import Routes from '../../routes'
 import { Feather } from '@expo/vector-icons'
@@ -18,23 +18,43 @@ type RouteDetailParams = {
     }
 }
 
+type CategoryProps = {
+    id: string,
+    name: string
+}
+
 type OrderRouteProps = RouteProp<RouteDetailParams, 'Order'>
 
 function Order() {
     const route = useRoute<OrderRouteProps>()
     const navigation = useNavigation()
 
+    const [category, setCategory] = useState<CategoryProps[] | []>([])
+    const [categorySelected, setCategorySelected] = useState<CategoryProps>()
+    const [amount, setAmout] = useState('1')
+
+    useEffect(()=>{
+        async function loadInfo(){
+            const res = await api.get('/category')
+            setCategory(res.data)
+            setCategorySelected(res.data[0])
+        }
+
+        loadInfo()
+    },[])
+
+
 
     async function handleCloseOrder() {
         try {
-            await api.delete('/order',{
-                params:{
+            await api.delete('/order', {
+                params: {
                     order_id: route.params?.order_id
                 }
             })
             navigation.goBack()
-            
-        } catch (e:any) {
+
+        } catch (e: any) {
             console.log(e.message)
         }
     }
@@ -49,9 +69,13 @@ function Order() {
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.input}>
-                <Text style={{ color: '#fff' }}>Pizzas</Text>
+            {category.length !== 0 && (
+                <TouchableOpacity style={styles.input}>
+                <Text style={{ color: '#fff' }}>
+                    {categorySelected?.name}
+                </Text>
             </TouchableOpacity>
+            )}
 
             <TouchableOpacity style={styles.input}>
                 <Text style={{ color: '#fff' }}>Pizza de calabresa</Text>
@@ -63,7 +87,8 @@ function Order() {
                 <TextInput
                     style={[styles.input, { width: '60%', textAlign: 'center' }]}
                     keyboardType='numeric'
-                    value='1'
+                    value={amount}
+                    onChangeText={setAmout}
                 />
             </View>
 
