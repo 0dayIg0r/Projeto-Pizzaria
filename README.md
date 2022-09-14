@@ -1,6 +1,4 @@
-<div >
-# Projeto Pizzaria 
-
+<div>
 ### EM ANDAMENTO 
 
 #### Tecnologias que estou usando 
