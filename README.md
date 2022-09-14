@@ -1,7 +1,7 @@
-<div>
-### EM ANDAMENTO 
 
-#### Tecnologias que estou usando 
+### EM ANDAMENTO ### 
+
+#### Tecnologias que estou usando ####
 
 ![IMG ](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) 
 ![IMG ](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) 
@@ -15,4 +15,4 @@
 ![IMG ](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) 
 
 Talvez eu tenha esquecido de alguma coisa.
-## ** Um bom README virá com o fim do projeto ! 🧐</div>
+## ** Um bom README virá com o fim do projeto ! 🧐 ##
