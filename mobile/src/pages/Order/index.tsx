@@ -8,8 +8,10 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    Modal
 } from 'react-native'
+import ModalPicker from '../../components/ModalPicker'
 
 type RouteDetailParams = {
     Order: {
@@ -18,7 +20,7 @@ type RouteDetailParams = {
     }
 }
 
-type CategoryProps = {
+export type CategoryProps = {
     id: string,
     name: string
 }
@@ -32,16 +34,17 @@ function Order() {
     const [category, setCategory] = useState<CategoryProps[] | []>([])
     const [categorySelected, setCategorySelected] = useState<CategoryProps>()
     const [amount, setAmout] = useState('1')
+    const [showModal, setShowModal] = useState(false)
 
-    useEffect(()=>{
-        async function loadInfo(){
+    useEffect(() => {
+        async function loadInfo() {
             const res = await api.get('/category')
             setCategory(res.data)
             setCategorySelected(res.data[0])
         }
 
         loadInfo()
-    },[])
+    }, [])
 
 
 
@@ -59,6 +62,10 @@ function Order() {
         }
     }
 
+    function handleCategory(item: CategoryProps) {
+        setCategorySelected(item)
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -70,11 +77,11 @@ function Order() {
             </View>
 
             {category.length !== 0 && (
-                <TouchableOpacity style={styles.input}>
-                <Text style={{ color: '#fff' }}>
-                    {categorySelected?.name}
-                </Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.input} onPress={() => setShowModal(true)}>
+                    <Text style={{ color: '#fff' }}>
+                        {categorySelected?.name}
+                    </Text>
+                </TouchableOpacity>
             )}
 
             <TouchableOpacity style={styles.input}>
@@ -101,6 +108,19 @@ function Order() {
                     <Text style={styles.buttonText}>Avançar</Text>
                 </TouchableOpacity>
             </View>
+
+            <Modal
+                transparent={true}
+                visible={showModal}
+                animationType='fade'
+            >
+                <ModalPicker
+                handlecloseModal={() => setShowModal(false)}
+                options ={category}
+                selectedItem ={handleCategory}
+                />
+            </Modal>
+
 
         </View>
     )
