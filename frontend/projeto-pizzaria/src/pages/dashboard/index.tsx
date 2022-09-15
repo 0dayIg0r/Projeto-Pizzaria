@@ -54,7 +54,7 @@ export default function DashBoard({ orders }: HomeProps) {
         setOrderList(res.data)
     }
 
-    // Automatic refresh 1 and 1 minute
+    // Automatic refresh in 1 minute
     setTimeout(async () => {
         const apiClient = setupAPIClient()
         const res = await apiClient.get('/order')
