@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native'
-import Routes from '../../routes'
 import { Feather } from '@expo/vector-icons'
 import { api } from '../../services/api'
+
 import {
     View,
     Text,
@@ -12,8 +12,13 @@ import {
     Modal,
     FlatList
 } from 'react-native'
+
 import ModalPicker from '../../components/ModalPicker'
 import ListItem from '../../components/ListItem/Index'
+
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { StackParamList } from '../../routes/app.routes'
+
 
 type RouteDetailParams = {
     Order: {
@@ -43,7 +48,8 @@ type OrderRouteProps = RouteProp<RouteDetailParams, 'Order'>
 
 function Order() {
     const route = useRoute<OrderRouteProps>()
-    const navigation = useNavigation()
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
+    
 
     const [category, setCategory] = useState<CategoryProps[] | []>([])
     const [categorySelected, setCategorySelected] = useState<CategoryProps | undefined>()
@@ -105,35 +111,42 @@ function Order() {
         setProductSelected(item)
     }
 
-    async  function handleAdd() {
-        const res = await api.post('/order/add',{
+    async function handleAdd() {
+        const res = await api.post('/order/add', {
             order_id: route.params.order_id,
-            name: productSelected?.name, 
+            name: productSelected?.name,
             product_id: productSelected?.id,
             amount: Number(amount)
         })
 
-      let data = {
-        id: res.data.id,
-        product_id: productSelected?.id as string,
-        name: productSelected?.name as string,
-        amount: amount
-      }
+        let data = {
+            id: res.data.id,
+            product_id: productSelected?.id as string,
+            name: productSelected?.name as string,
+            amount: amount
+        }
 
-       setItems(oldArray => [...oldArray, data])
+        setItems(oldArray => [...oldArray, data])
     }
 
-    async function handleDeleteItem(item_id:string) {
-      await api.delete('/order/remove',{
-        params:{
-            item_id: item_id
-        }
-      })
+    async function handleDeleteItem(item_id: string) {
+        await api.delete('/order/remove', {
+            params: {
+                item_id: item_id
+            }
+        })
 
-      let removeItem = items.filter(item =>{
-        return (item.id !== item_id)
-      })
-      setItems(removeItem)
+        let removeItem = items.filter(item => {
+            return (item.id !== item_id)
+        })
+        setItems(removeItem)
+    }
+
+     function handleFinishOrder() {
+        navigation.navigate('FinishOrder', {
+            number:route.params?.number,
+            order_id: route.params?.order_id
+        })
     }
 
     return (
@@ -142,7 +155,7 @@ function Order() {
                 <Text style={styles.title}> Mesa {route.params.number}</Text>
 
                 <TouchableOpacity onPress={handleCloseOrder}>
-                    {items.length === 0 &&(
+                    {items.length === 0 && (
                         <Feather name='trash-2' size={28} color='#FF3F4B' />
                     )}
                 </TouchableOpacity>
@@ -179,6 +192,7 @@ function Order() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
+                    onPress={handleFinishOrder}
                     style={[styles.button, { opacity: items.length === 0 ? 0.3 : 1 }]}
                     disabled={items.length === 0}
 
@@ -192,7 +206,7 @@ function Order() {
                 style={{ flex: 1, marginTop: 24 }}
                 data={items}
                 keyExtractor={(item) => item.id}
-                renderItem={({item}) => <ListItem data={item} deleteItem={handleDeleteItem}/>}
+                renderItem={({ item }) => <ListItem data={item} deleteItem={handleDeleteItem} />}
             />
 
             <Modal
