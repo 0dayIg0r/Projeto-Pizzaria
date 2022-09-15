@@ -24,6 +24,11 @@ export type CategoryProps = {
     id: string,
     name: string
 }
+// if you wanna pick more data just add in the type, description, price, etc..
+type ProductProps = {
+    id: string,
+    name: string
+}
 
 type OrderRouteProps = RouteProp<RouteDetailParams, 'Order'>
 
@@ -32,9 +37,14 @@ function Order() {
     const navigation = useNavigation()
 
     const [category, setCategory] = useState<CategoryProps[] | []>([])
-    const [categorySelected, setCategorySelected] = useState<CategoryProps>()
+    const [categorySelected, setCategorySelected] = useState<CategoryProps | undefined>()
     const [amount, setAmout] = useState('1')
     const [showModal, setShowModal] = useState(false)
+
+    const [products, setProducts] = useState<ProductProps[] | []>([])
+    const [productSelected, setProductSelected] = useState<ProductProps | undefined>()
+    const [showModalProdutc, setShowModalProduct] = useState(false)
+   
 
     useEffect(() => {
         async function loadInfo() {
@@ -46,6 +56,20 @@ function Order() {
         loadInfo()
     }, [])
 
+
+    useEffect(()=>{
+        async function loadProducts() {
+            const res = await api.get('/category/products',{
+                params:{
+                    category_id: categorySelected?.id
+                }
+            })
+          setProducts(res.data)
+          setProductSelected(res.data[0])
+        }
+
+        loadProducts()
+    },[categorySelected])
 
 
     async function handleCloseOrder() {
@@ -84,9 +108,11 @@ function Order() {
                 </TouchableOpacity>
             )}
 
-            <TouchableOpacity style={styles.input}>
-                <Text style={{ color: '#fff' }}>Pizza de calabresa</Text>
+            {products.length !== 0 &&(
+                <TouchableOpacity style={styles.input}>
+                <Text style={{ color: '#fff' }}>{productSelected?.name}</Text>
             </TouchableOpacity>
+            )}
 
             <View style={styles.qtyContainer}>
                 <Text style={styles.qtyText}> Quantidade</Text>
@@ -115,9 +141,9 @@ function Order() {
                 animationType='fade'
             >
                 <ModalPicker
-                handlecloseModal={() => setShowModal(false)}
-                options ={category}
-                selectedItem ={handleCategory}
+                    handlecloseModal={() => setShowModal(false)}
+                    options={category}
+                    selectedItem={handleCategory}
                 />
             </Modal>
 
