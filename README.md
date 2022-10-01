@@ -1,5 +1,5 @@
 
-### EM ANDAMENTO ### 
+### Finalizado ### 
 
 #### Tecnologias que estou usando ####
 
@@ -16,4 +16,4 @@
 ![IMG ](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) 
 
 Talvez eu tenha esquecido de alguma coisa.
-##  Um bom README virá com o fim do projeto ! 🦅 ##
+##  Um bom README virá mais complexo ! 🦅 ##
